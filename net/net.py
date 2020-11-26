@@ -6,7 +6,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 import math
-from scipy.misc import logsumexp
+from scipy.special import logsumexp
 import numpy as np
 
 from keras.regularizers import l2
@@ -129,6 +129,9 @@ class net:
         Yt_hat = Yt_hat * self.std_y_train + self.mean_y_train
         MC_pred = np.mean(Yt_hat, 0)
         rmse = np.mean((y_test.squeeze() - MC_pred.squeeze())**2.)**0.5
+
+        print("check bug: ", Yt_hat.shape, y_test.shape)
+        print(y_test)
 
         # We compute the test log-likelihood
         ll = (logsumexp(-0.5 * self.tau * (y_test[None] - Yt_hat)**2., 0) - np.log(T) 
